@@ -29,6 +29,8 @@ $(document).ready(function(){
     });
 
     $('.deal').click(function(){
+        $('.chip').prop('disabled', true);
+
         if(!dealt){
             dealt = true;
             shuffle();
@@ -214,6 +216,8 @@ function reset(){
     $('.hit').prop('disabled', false);
     $('.deal').prop('disabled', false);
     $('.stand').prop('disabled', false);
+
+    $('.chip').prop('disabled', false);
 }
 
 function gameOver(){
