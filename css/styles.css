@@ -78,13 +78,20 @@
     -moz-animation: AnimationName 1s ease infinite;
     animation: AnimationName 1s ease infinite;
 
+    transition: all 0.5s;
+
     color: white;
+    width: 400px;
 }
 
 .allIn:hover{
-    color: white;
-    background: linear-gradient(270deg, #5a0c0c, #707c00, #217100, #00665b, #0005f9, #f900b9);
+    background: linear-gradient(270deg, #b40f0f, #e8f900, #44f900, #00f9e5, #0005f9, #f900b9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     background-size: 1200% 1200%;
+    font-weight: bolder;
+    font-size: 30px;
+
     -webkit-animation: AnimationName 1s ease infinite;
     -moz-animation: AnimationName 1s ease infinite;
     animation: AnimationName 1s ease infinite;
