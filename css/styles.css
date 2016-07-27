@@ -19,7 +19,7 @@
     text-align: center;
 }
 
-.deal, .hit, .stand, .reset{
+.deal, .hit, .stand, .reset, .double-down{
     width: 100%;
 }
 
@@ -42,4 +42,8 @@
 
 .wager-area{
     text-align: center;
+}
+
+.hidden{
+    display: none;
 }

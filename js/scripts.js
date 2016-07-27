@@ -40,10 +40,39 @@ $(document).ready(function(){
                 $(this).addClass('btn-danger');
             }
         });
+
+        $('.deal').attr('disabled', false);
+        $('.stand').attr('disabled', false);
+    });
+
+    $('.double-down').click(function(){
+        $('.bet').html(bet);
+
+        placeCard('player', hit, deck[topCard]);
+        playerHand.push(deck[topCard]);
+        calculateTotal(playerHand, 'player');
+
+        $('.hit').attr('disabled', true);
+        $('.double-down').attr('disabled', true);
+
+        if(calculateTotal(playerHand, 'player') > 21){
+            lose()
+        }else if(calculateTotal(playerHand, 'player') == 21){
+            win()
+        }else if(calculateTotal(dealerHand, 'dealer') == 21){
+            lose();
+        }
     });
 
     $('.deal').click(function(){
         $('.chip').prop('disabled', true);
+        $('.deal').addClass('hidden');
+        $('.double-down').removeClass('hidden');
+        $('.hit').attr('disabled', false);
+
+        if(bet > cash){
+            $('.double-down').attr('disabled', true);
+        }
 
         if(!dealt){
             dealt = true;
@@ -210,13 +239,15 @@ function createDeck(){
 }
 
 function shuffle(){
-    for(var i = 1; i < 1000; i++){
+    for(var i = 1; i < 1000; i++) {
         var card1 = Math.floor(Math.random() * deck.length);
         var card2 = Math.floor(Math.random() * deck.length);
         var temp = deck[card1];
         deck[card1] = deck[card2];
         deck[card2] = temp;
     }
+    // deck[0] = "AH";
+    // deck[2] = "KD";
 }
 
 function calculateTotal(hand, turn){
@@ -244,17 +275,23 @@ function reset(){
     hit = 3;
     dealerHit = 3;
 
+    cash += bet;
+    bet = 0;
+
+    $('.cash').html(cash);
+    $('.bet').html(bet);
+
     for(var i = 1; i < 7; i++){
         $('.' + i).css('background-image', '');
     }
 
     calculateTotal(playerHand, 'player');
     calculateTotal(dealerHand, 'dealer');
-    $('.hit').prop('disabled', false);
-    $('.deal').prop('disabled', false);
-    $('.stand').prop('disabled', false);
 
     $('.chip').prop('disabled', false);
+    $('.deal').removeClass('hidden');
+    $('.double-down').addClass('hidden');
+    $('.double-down').attr('disabled', false);
 }
 
 function gameOver(){
@@ -268,10 +305,19 @@ function win(){
     wins++;
     $('.wins').html(wins);
     gameOver();
-    cash = cash + (bet * 2);
+
+    if(playerHand.length == 2 && calculateTotal(playerHand, 'player') == 21){
+        bet *= 2.5;
+    }else{
+        bet *= 2;
+    }
+
+    cash = cash + bet;
     bet = 0;
     $('.cash').html(cash);
     $('.bet').html(0);
+
+    reset();
 }
 
 function lose(){
@@ -279,4 +325,6 @@ function lose(){
     gameOver();
     bet = 0;
     $('.bet').html(0);
+
+    reset();
 }
