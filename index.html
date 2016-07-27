@@ -55,6 +55,22 @@
                 </div>
             </div>
 
+            <div class="row hidden splitRow">
+                <div class="col-sm-12 player-wrapper">
+                    <div class="col-sm-3 player-score">
+                        <h4>Split Total: <span class="split-number">0</span></h4>
+                    </div>
+                    <div class="col-sm-9 split-deck">
+                        <div class="col-sm-2 card 1"></div>
+                        <div class="col-sm-2 card 2"></div>
+                        <div class="col-sm-2 card 3"></div>
+                        <div class="col-sm-2 card 4"></div>
+                        <div class="col-sm-2 card 5"></div>
+                        <div class="col-sm-2 card 6"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row wager-area">
                 <h3>Your Chips</h3>
                 <h4>Money: $<span class="cash">300</span></h4>
@@ -68,16 +84,11 @@
             </div>
 
             <div class="row player-actions">
-                <div class="col-sm-2 col-sm-offset-2">
-                    <button class="btn btn-success deal">Deal</button>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
-                    <button class="btn btn-primary hit">Hit</button>
-                    <button class="btn btn-danger reset">Reset</button>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
-                    <button class="btn btn-warning stand">Stand</button>
-                </div>
+                <button class="btn btn-success deal" disabled>Deal</button>
+                <button class="btn btn-info split" disabled>Split</button>
+                <button class="btn btn-danger reset">Reset</button>
+                <button class="btn btn-primary hit" disabled>Hit</button>
+                <button class="btn btn-warning stand" disabled>Stand</button>
             </div>
         </div>
     </div>

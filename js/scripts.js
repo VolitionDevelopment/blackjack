@@ -5,15 +5,17 @@
 var deck = createDeck();
 var hit = 3;
 var dealerHit = 3;
-var dealt = false;
 var wins = 0;
 var topCard = 4;
 
 var playerHand = [];
+var splitHand = [];
 var dealerHand = [];
 
 var bet = 0;
 var cash = 300;
+
+var hitHand = 'player';
 
 $(document).ready(function(){
     $('.chip').each(function(){
@@ -21,6 +23,27 @@ $(document).ready(function(){
             $(this).removeClass('btn-success');
             $(this).addClass('btn-danger');
         }
+    });
+
+    $('.split').click(function(){
+        $('.splitRow').removeClass('hidden');
+
+        $('.player-deck .' + 2).css('background-image', '');
+        placeCard('split', 1, deck[2]);
+        $('.split').attr('disabled', true);
+
+        splitHand[0] = playerHand[1];
+        playerHand.splice(1, 1);
+
+        console.log(playerHand);
+        console.log(splitHand);
+
+        calculateTotal(playerHand, 'player');
+        calculateTotal(splitHand, 'split');
+
+
+        hit--;
+
     });
 
     $('.chip').click(function(){
@@ -34,6 +57,8 @@ $(document).ready(function(){
             $('.bet').html(bet);
         }
 
+        $('.deal').prop('disabled', false);
+
         $('.chip').each(function(){
             if(Number($(this).attr('chipValue')) > cash){
                 $(this).removeClass('btn-success');
@@ -44,83 +69,131 @@ $(document).ready(function(){
 
     $('.deal').click(function(){
         $('.chip').prop('disabled', true);
+        $('.deal').prop('disabled', true);
+        $('.hit').prop('disabled', false);
+        $('.stand').prop('disabled', false);
 
-        if(!dealt){
-            dealt = true;
-            shuffle();
+        shuffle();
 
-            playerHand.push(deck[0]);
-            playerHand.push(deck[2]);
-            placeCard('player', '1', deck[0]);
-            placeCard('player', '2', deck[2]);
+        playerHand.push(deck[0]);
+        playerHand.push(deck[2]);
+        placeCard('player', '1', deck[0]);
+        placeCard('player', '2', deck[2]);
 
-            dealerHand.push(deck[1]);
-            dealerHand.push(deck[3]);
-            placeCard('dealer', '1', deck[1]);
 
-            calculateTotal(playerHand, 'player');
-            calculateTotal(dealerHand, 'dealer');
 
-            if(calculateTotal(playerHand, 'player') > 21){
-                lose()
-            }else if(calculateTotal(dealerHand, 'dealer') > 21){
-                win()
-            }else if(calculateTotal(playerHand, 'player') == 21){
-                win()
-            }else if(calculateTotal(dealerHand, 'dealer') == 21){
-                lose()
-            }
-        }
-    });
+        dealerHand.push(deck[1]);
+        dealerHand.push(deck[3]);
+        placeCard('dealer', '1', deck[1]);
 
-    $('.hit').click(function(){
-        if(hit < 7 && dealt){
-            placeCard('player', hit, deck[topCard]);
-            playerHand.push(deck[topCard]);
-            calculateTotal(playerHand, 'player');
+        calculateTotal(playerHand, 'player');
+        calculateTotal(dealerHand, 'dealer');
 
-            if(calculateTotal(playerHand, 'player') > 21){
-                lose()
-            }else if(calculateTotal(playerHand, 'player') == 21){
-                win()
-            }else if(calculateTotal(dealerHand, 'dealer') == 21){
-                lose();
-            }
-
-            topCard++;
-            hit++;
-        }
-    });
-
-    $('.stand').click(function(){
-        placeCard('dealer', '2', deck[3]);
-        while(calculateTotal(dealerHand, 'dealer') < 17){
-            if(dealerHit < 7){
-                placeCard('dealer', dealerHit, deck[topCard]);
-                dealerHand.push(deck[topCard]);
-                calculateTotal(dealerHand, 'dealer');
-
-                topCard++;
-                hit++;
-            }
+        if(deck[0].slice(0, -1) == deck[2].slice(0, -1)){
+            $('.split').attr('disabled', false);
         }
 
         if(calculateTotal(playerHand, 'player') > 21){
             lose()
+        }else if(calculateTotal(dealerHand, 'dealer') > 21){
+            win()
+        }else if(calculateTotal(playerHand, 'player') == 21){
+            win()
+        }else if(calculateTotal(dealerHand, 'dealer') == 21){
+            lose()
+        }
+    });
+
+    $('.hit').click(function(){
+        placeCard(hitHand, hit, deck[topCard]);
+
+        if(hitHand === 'player'){
+            playerHand.push(deck[topCard]);
         }else{
-            if(calculateTotal(playerHand, 'player') > calculateTotal(dealerHand, 'dealer')){
-                win()
-            }else if(calculateTotal(playerHand, 'player') == calculateTotal(dealerHand, 'dealer')) {
-                if(playerHand.length >= dealerHand.length){
-                    lose()
+            splitHand.push(deck[topCard]);
+        }
+        calculateTotal(playerHand, 'player');
+        calculateTotal(splitHand, 'split');
+
+        if(calculateTotal(playerHand, 'player') > 21){
+            if(hitHand == 'player'){
+                hitHand = 'split';
+            }else{
+                lose();
+            }
+        }else if(calculateTotal(playerHand, 'player') == 21){
+            if(hitHand == 'player'){
+                hitHand = 'split';
+            }else{
+                win();
+            }
+        }else if(calculateTotal(dealerHand, 'dealer') == 21){
+            if(hitHand == 'player'){
+                hitHand = 'split';
+            }else{
+                lose();
+            }
+        }
+
+        topCard++;
+        hit++;
+    });
+
+    $('.stand').click(function(){
+        placeCard('dealer', '2', deck[3]);
+        if(hitHand == 'split'){
+            while(calculateTotal(dealerHand, 'dealer') < 17){
+                if(dealerHit < 7){
+                    placeCard('dealer', dealerHit, deck[topCard]);
+                    dealerHand.push(deck[topCard]);
+                    calculateTotal(dealerHand, 'dealer');
+
+                    topCard++;
+                    hit++;
+                }
+            }
+        }
+
+        if(calculateTotal(playerHand, hitHand) > 21){
+            if(hitHand == 'player'){
+                hitHand = 'split';
+            }else{
+                lose();
+            }
+        }else{
+            if(calculateTotal(playerHand, hitHand) > calculateTotal(dealerHand, 'dealer')){
+                if(hitHand == 'player'){
+                    hitHand = 'split';
                 }else{
-                    win()
+                    win();
+                }
+            }else if(calculateTotal(playerHand, hitHand) == calculateTotal(dealerHand, 'dealer')) {
+                if(playerHand.length >= dealerHand.length){
+                    if(hitHand == 'player'){
+                        hitHand = 'split';
+                    }else{
+                        lose();
+                    }
+                }else{
+                    if(hitHand == 'player'){
+                        hitHand = 'split';
+                    }else{
+                        win();
+                    }
                 }
             }else{
                 if(calculateTotal(dealerHand, 'dealer') > 21){
-                    win()
+                    if(hitHand == 'player'){
+                        hitHand = 'split';
+                    }else{
+                        win();
+                    }
                 }else{
-                    lose()
+                    if(hitHand == 'player'){
+                        hitHand = 'split';
+                    }else{
+                        lose();
+                    }
                 }
             }
         }
@@ -217,6 +290,9 @@ function shuffle(){
         deck[card1] = deck[card2];
         deck[card2] = temp;
     }
+
+    deck[0] = "7H";
+    deck[2] = "7D";
 }
 
 function calculateTotal(hand, turn){
@@ -240,7 +316,6 @@ function reset(){
     deck = createDeck();
     playerHand = [];
     dealerHand = [];
-    dealt = false;
     hit = 3;
     dealerHit = 3;
 
@@ -250,11 +325,9 @@ function reset(){
 
     calculateTotal(playerHand, 'player');
     calculateTotal(dealerHand, 'dealer');
-    $('.hit').prop('disabled', false);
-    $('.deal').prop('disabled', false);
-    $('.stand').prop('disabled', false);
 
     $('.chip').prop('disabled', false);
+    $('.splitRow').addClass('hidden');
 }
 
 function gameOver(){
@@ -280,3 +353,4 @@ function lose(){
     bet = 0;
     $('.bet').html(0);
 }
+

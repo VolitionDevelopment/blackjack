@@ -19,16 +19,13 @@
     text-align: center;
 }
 
-.deal, .hit, .stand, .reset{
-    width: 100%;
+.deal, .hit, .stand, .reset, .split{
+    width: 100px;
 }
 
 .player-actions{
-    margin-top: 20px;
-}
-
-.hit{
-    margin-bottom: 10px;
+    margin: 20px auto auto;
+    text-align: center;
 }
 
 .container{
@@ -42,4 +39,8 @@
 
 .wager-area{
     text-align: center;
+}
+
+.hidden{
+    display: none;
 }
