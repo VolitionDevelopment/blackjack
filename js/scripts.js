@@ -246,8 +246,10 @@ function shuffle(){
         deck[card1] = deck[card2];
         deck[card2] = temp;
     }
-    // deck[0] = "AH";
-    // deck[2] = "KD";
+
+    // Gets Blackjack every time
+    //deck[0] = "AH";
+    //deck[2] = "KD";
 }
 
 function calculateTotal(hand, turn){
@@ -312,12 +314,14 @@ function win(){
         bet *= 2;
     }
 
+    placeCard('dealer', '2', deck[3]);
+
     cash = cash + bet;
     bet = 0;
     $('.cash').html(cash);
     $('.bet').html(0);
 
-    reset();
+    //reset();
 }
 
 function lose(){
@@ -326,5 +330,7 @@ function lose(){
     bet = 0;
     $('.bet').html(0);
 
-    reset();
+    placeCard('dealer', '2', deck[3]);
+
+    //reset();
 }
