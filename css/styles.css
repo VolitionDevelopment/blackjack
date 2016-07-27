@@ -47,3 +47,61 @@
 .hidden{
     display: none;
 }
+
+.btn-purple{
+    background-color: blueviolet;
+    border-color: #702ac6;
+    color: white;
+}
+
+.btn-green{
+    background-color: darkgreen;
+    border-color: #004000;
+    color: white;
+}
+
+.btn-purple:hover{
+    background-color: #6724ac;
+    color: white;
+}
+
+.btn-green:hover{
+    background-color: #005100;
+    color: white;
+}
+
+.allIn {
+    background: linear-gradient(270deg, #b40f0f, #e8f900, #44f900, #00f9e5, #0005f9, #f900b9);
+    background-size: 1200% 1200%;
+
+    -webkit-animation: AnimationName 1s ease infinite;
+    -moz-animation: AnimationName 1s ease infinite;
+    animation: AnimationName 1s ease infinite;
+
+    color: white;
+}
+
+.allIn:hover{
+    color: white;
+    background: linear-gradient(270deg, #5a0c0c, #707c00, #217100, #00665b, #0005f9, #f900b9);
+    background-size: 1200% 1200%;
+    -webkit-animation: AnimationName 1s ease infinite;
+    -moz-animation: AnimationName 1s ease infinite;
+    animation: AnimationName 1s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}

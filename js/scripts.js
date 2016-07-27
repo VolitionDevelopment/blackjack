@@ -12,15 +12,14 @@ var topCard = 4;
 var playerHand = [];
 var dealerHand = [];
 
+var cheating = false;
+
 var bet = 0;
 var cash = 300;
 
 $(document).ready(function(){
     $('.chip').each(function(){
-        if(Number($(this).attr('chipValue')) > cash){
-            $(this).removeClass('btn-success');
-            $(this).addClass('btn-danger');
-        }
+        canUseChip();
     });
 
     $('.chip').click(function(){
@@ -32,17 +31,29 @@ $(document).ready(function(){
 
             $('.cash').html(cash);
             $('.bet').html(bet);
+
+            $('.deal').attr('disabled', false);
+            $('.stand').attr('disabled', false);
         }
 
-        $('.chip').each(function(){
-            if(Number($(this).attr('chipValue')) > cash){
-                $(this).removeClass('btn-success');
-                $(this).addClass('btn-danger');
-            }
-        });
+        canUseChip();
 
-        $('.deal').attr('disabled', false);
-        $('.stand').attr('disabled', false);
+
+    });
+
+    $('.allIn').click(function(){
+        bet = cash;
+        cash = 0;
+
+        $('.cash').html(cash);
+        $('.bet').html(bet);
+
+        if(bet > 0){
+            $('.deal').attr('disabled', false);
+            $('.stand').attr('disabled', false);
+        }
+
+        canUseChip();
     });
 
     $('.double-down').click(function(){
@@ -62,6 +73,10 @@ $(document).ready(function(){
         }else if(calculateTotal(dealerHand, 'dealer') == 21){
             lose();
         }
+    });
+
+    $(".cheat").hover(function(){
+        cheating = true;
     });
 
     $('.deal').click(function(){
@@ -116,6 +131,8 @@ $(document).ready(function(){
                 lose();
             }
 
+            $('.double-down').attr('disabled', true);
+
             topCard++;
             hit++;
         }
@@ -157,29 +174,7 @@ $(document).ready(function(){
 
     $('.reset').click(function(){
         reset();
-        $('.chip').each(function(){
-            if(Number($(this).attr('chipValue')) < cash){
-                $(this).removeClass('btn-danger');
-
-                switch(Number($(this).attr('chipValue'))){
-                    case 1:
-                        $(this).addClass('btn-default');
-                        break;
-                    case 5:
-                        $(this).addClass('btn-info');
-                        break;
-                    case 10:
-                        $(this).addClass('btn-primary');
-                        break;
-                    case 50:
-                        $(this).addClass('btn-warning');
-                        break;
-                    case 100:
-                        $(this).addClass('btn-success');
-                        break;
-                }
-            }
-        });
+        canUseChip();
     });
 });
 
@@ -248,8 +243,9 @@ function shuffle(){
     }
 
     // Gets Blackjack every time
-    //deck[0] = "AH";
-    //deck[2] = "KD";
+    if(cheating){
+        cheat();
+    }
 }
 
 function calculateTotal(hand, turn){
@@ -294,6 +290,7 @@ function reset(){
     $('.deal').removeClass('hidden');
     $('.double-down').addClass('hidden');
     $('.double-down').attr('disabled', false);
+    cheating = false;
 }
 
 function gameOver(){
@@ -324,6 +321,14 @@ function win(){
     //reset();
 }
 
+function cheat(){
+    var c1 = ["KD", "KH", "KS", "KC", "QD", "QH", "QS", "QC", "JD", "JH", "JS", "JC"];
+    var c2 = ["KD", "KH", "KS", "KC", "QD", "QH", "QS", "QC", "JD", "JH", "JS", "JC", "AD", "AH", "AS", "AC"];
+
+    deck[0] = c1[Math.floor(Math.random() * c1.length)];
+    deck[2] = c2[Math.floor(Math.random() * c2.length)];
+}
+
 function lose(){
     alert("You lose!");
     gameOver();
@@ -333,4 +338,83 @@ function lose(){
     placeCard('dealer', '2', deck[3]);
 
     //reset();
+}
+
+function canUseChip(){
+    $('.chip').each(function(){
+        switch(Number($(this).attr('chipValue'))){
+            case 1:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-default');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-default');
+                }
+                    break;
+            case 5:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-info');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-info');
+                }
+                    break;
+            case 10:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-primary');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-primary');
+                }
+                    break;
+            case 50:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-warning');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-warning');
+                }
+                    break;
+            case 100:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-success');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-success');
+                }
+                    break;
+            case 500:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-purple');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-purple');
+                }
+                    break;
+            case 1000:
+
+                if(Number($(this).attr('chipValue')) <= cash){
+                    $(this).addClass('btn-green');
+                    $(this).removeClass('btn-danger');
+                }else{
+                    $(this).addClass('btn-danger');
+                    $(this).removeClass('btn-green');
+                }
+                    break;
+        }
+    });
+
+
 }
