@@ -16,8 +16,15 @@ var bet = 0;
 var cash = 300;
 
 $(document).ready(function(){
+    $('.chip').each(function(){
+        if(Number($(this).attr('chipValue')) > cash){
+            $(this).removeClass('btn-success');
+            $(this).addClass('btn-danger');
+        }
+    });
+
     $('.chip').click(function(){
-        var val = Number($(this).attr('chipValue'))
+        var val = Number($(this).attr('chipValue'));
 
         if(val <= cash){
             bet += val;
@@ -26,6 +33,13 @@ $(document).ready(function(){
             $('.cash').html(cash);
             $('.bet').html(bet);
         }
+
+        $('.chip').each(function(){
+            if(Number($(this).attr('chipValue')) > cash){
+                $(this).removeClass('btn-success');
+                $(this).addClass('btn-danger');
+            }
+        });
     });
 
     $('.deal').click(function(){
@@ -114,6 +128,29 @@ $(document).ready(function(){
 
     $('.reset').click(function(){
         reset();
+        $('.chip').each(function(){
+            if(Number($(this).attr('chipValue')) < cash){
+                $(this).removeClass('btn-danger');
+
+                switch(Number($(this).attr('chipValue'))){
+                    case 1:
+                        $(this).addClass('btn-default');
+                        break;
+                    case 5:
+                        $(this).addClass('btn-info');
+                        break;
+                    case 10:
+                        $(this).addClass('btn-primary');
+                        break;
+                    case 50:
+                        $(this).addClass('btn-warning');
+                        break;
+                    case 100:
+                        $(this).addClass('btn-success');
+                        break;
+                }
+            }
+        });
     });
 });
 
