@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blackjack</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="blackjack-table col-sm-8 col-sm-offset-2">
+            <div class="row">
+                <div class="col-sm-12 dealer-wrapper">
+
+                    <div class="col-sm-3 dealer-score">
+                        <h2>Wins: <span class="wins">0</span></h2>
+                        <h4>Dealer Total: <span class="dealer-number">0</span></h4>
+                    </div>
+                    <div class="col-sm-9 dealer-deck">
+                        <div class="col-sm-2 card 1"></div>
+                        <div class="col-sm-2 card 2"></div>
+                        <div class="col-sm-2 card 3"></div>
+                        <div class="col-sm-2 card 4"></div>
+                        <div class="col-sm-2 card 5"></div>
+                        <div class="col-sm-2 card 6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row wager-area">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <h3>Bet: $<span class="bet">0</span></h3>
+                    <div class="chips">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 player-wrapper">
+                    <div class="col-sm-3 player-score">
+                        <h4>Player Total: <span class="player-number">0</span></h4>
+                    </div>
+                    <div class="col-sm-9 player-deck">
+                        <div class="col-sm-2 card 1"></div>
+                        <div class="col-sm-2 card 2"></div>
+                        <div class="col-sm-2 card 3"></div>
+                        <div class="col-sm-2 card 4"></div>
+                        <div class="col-sm-2 card 5"></div>
+                        <div class="col-sm-2 card 6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row wager-area">
+                <h3>Your Chips</h3>
+                <h4>Money: $<span class="cash">300</span></h4>
+                <div class="chips">
+                    <button class="btn btn-success chip" chipValue="1">$1</button>
+                    <button class="btn btn-success chip" chipValue="5">$5</button>
+                    <button class="btn btn-success chip" chipValue="10">$10</button>
+                    <button class="btn btn-success chip" chipValue="50">$50</button>
+                    <button class="btn btn-success chip" chipValue="100">$100</button>
+                </div>
+            </div>
+
+            <div class="row player-actions">
+                <div class="col-sm-2 col-sm-offset-2">
+                    <button class="btn btn-success deal">Deal</button>
+                </div>
+                <div class="col-sm-2 col-sm-offset-1">
+                    <button class="btn btn-primary hit">Hit</button>
+                    <button class="btn btn-danger reset">Reset</button>
+                </div>
+                <div class="col-sm-2 col-sm-offset-1">
+                    <button class="btn btn-warning stand">Stand</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
+<script src="js/scripts.js"></script>
+</body>
+</html>
